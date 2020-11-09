@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect, useDispatch } from 'react-redux';
-import { loadUsersFromServer, showMore } from '../../../redux/users/usersActions';
+import { showMore } from '../../../redux/users/usersActions';
 import UserCard from '../../UserCard/UserCard';
 import './Section3.scss'
 
@@ -12,11 +12,9 @@ const Section3 = (props)=> {
     const dispatch = useDispatch()
 
     const {users,data}  = props
+
     let link = typeof data !== 'undefined' ? data : []
     let list = typeof users !== 'undefined' ? users : []
-    console.log(data.page)
-    console.log(data.total_pages)
-
     let mapped = list.map(function(el,i){
         return {user:el ,index:i, value:el.registration_timestamp}
     })
@@ -41,7 +39,8 @@ const Section3 = (props)=> {
 const mapStateToProps = (state) =>{
     return{
       users: state.users.data.users,
-      data: state.users.data
+      data: state.users.data,
+ 
     }
   }
 

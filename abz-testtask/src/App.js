@@ -4,13 +4,15 @@ import Header from './components/Header/Header';
 import React, {useEffect} from 'react';
 import {connect, useDispatch} from "react-redux";
 import {loadUsersFromServer } from './redux/users/usersActions';
+import { loadingPositions } from './redux/positions/positionsActions';
 
 const  App = (props)=> {
   const dispatch = useDispatch()
-  const {getUsers} = props
+  const {getUsers,getPositions} = props
 
   useEffect(() =>{
     getUsers();
+    getPositions();
   },[]) 
 
   return (
@@ -33,7 +35,8 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
   return {
-    getUsers: () => dispatch(loadUsersFromServer())
+    getUsers: () => dispatch(loadUsersFromServer()),
+    getPositions: ()=> dispatch(loadingPositions())
     
   }
 }

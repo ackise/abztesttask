@@ -4,12 +4,14 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import './Section4.scss'
 import { Button, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 
+const Section4 = (props)=> {
 
-
-const Section4 = ()=> {
-
+    const {positions} = props
+    
+    let positionsList = typeof positions !== 'undefined' ? positions : []
 
     return (
         <div name='form'>
@@ -32,15 +34,12 @@ const Section4 = ()=> {
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Gender</FormLabel>
                     <RadioGroup aria-label="position" name="position" >
-                        <FormControlLabel  value="1" control={<Radio/>} label="Lawyer" />
-                        <FormControlLabel value="2" control={<Radio />} label="Content manager" />
-                        <FormControlLabel value="3" control={<Radio />} label="Security" />
-                        <FormControlLabel value="4" control={<Radio />} label="Designer" />
+                        {positionsList.map(position => <FormControlLabel  value={position.id} control={<Radio/>} key={position.name} label={position.name} />)}
                     </RadioGroup>
                 </FormControl>
                 <FormControl>
                 <FormLabel component="legend">Photo</FormLabel>
-                    <TextField placeholder='Upload you photo' variant="outlined" type='file' id='file' accept='.jpeg'></TextField><Button id='button' value='upload'>Browse</Button>
+                    <TextField placeholder='Upload you photo' variant="outlined" type='file' id='file' accept='accept="image/*"'></TextField><Button id='button' value='upload'>Browse</Button>
                 </FormControl>
             <button>Sign up now</button>
             </form>
@@ -48,4 +47,11 @@ const Section4 = ()=> {
         </div>
     )
 }
-export default Section4
+const mapStateToProps = (state) =>{
+    return {
+      positions: state.positions.positions, 
+    }
+  }
+
+
+export default connect(mapStateToProps)(Section4)
