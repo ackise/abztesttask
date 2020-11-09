@@ -1,0 +1,13 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: OpenSans;
+  font-weight: 400;
+}
+
+@media (max-width:360px) {
+  .App {
+    width: 360px;
+  }
+}
