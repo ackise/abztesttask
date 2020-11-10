@@ -1,4 +1,4 @@
-import Menu from '../Menu/Menu'
+
 import React from 'react'
 import Section1 from './Section1/Section1'
 import Section2 from './Section2/Section2'
@@ -12,7 +12,6 @@ const Body = ()=> {
             <Section2/>
             <Section3/>
             <Section4/>
-            <Menu></Menu>
         </div>
     )
 }

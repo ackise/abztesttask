@@ -20,7 +20,6 @@ export const loadUsersFromServer = (counts,link) => (dispatch)=>{
 }
 
 export const showMore = (counts,link) => (dispatch)=>{
-console.log(link)
 
  dispatch(loadUsersFromServer(counts,link))
 

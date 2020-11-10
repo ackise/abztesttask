@@ -17,7 +17,7 @@ const Section4 = (props) => {
     let email = useRef('')
     let phone = useRef('')
 
-    let fileName = imgRef.current.value !== undefined ? imgRef.current.value.replace(/^.*[\\\/]/, '') : ''
+    // let fileName = imgRef.current.value !== undefined ? imgRef.current.value.replace(/^.*[\\\/]/, '') : ''
     const [value, setValue] = React.useState('')
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -50,6 +50,7 @@ const Section4 = (props) => {
                     },
                     body: formData
                 })
+                // console.log(await res.json())
             }
             newUser()
         }
@@ -57,8 +58,8 @@ const Section4 = (props) => {
 
     }
     return (
-        <div name='form'>
-            <h1>Register to get a work </h1>
+        <div name='form' id='form' className='form'>
+            <h1 className='form__title'>Register to get a work </h1>
             <form className='form' onSubmit={handleSubmit} autoComplete="off">
                 <FormControl>
                     <FormLabel component="legend" htmlFor='name'>Name</FormLabel>

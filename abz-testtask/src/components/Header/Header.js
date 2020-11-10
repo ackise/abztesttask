@@ -1,12 +1,12 @@
 import React from 'react'
-import BurgerMenu from '../Burger_menu/BurgerMenu'
 import Logo from '../Logo/Logo'
+import Sidebar from '../Menu/Sidebar'
 import './Header.scss'
 
 const Header = ()=> {
     return (
         <div className="header">
-           <Logo/><BurgerMenu/>
+           <Logo/> 
         </div>
     )
 }

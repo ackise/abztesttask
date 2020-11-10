@@ -5,6 +5,8 @@ import React, {useEffect} from 'react';
 import {connect, useDispatch} from "react-redux";
 import {loadUsersFromServer } from './redux/users/usersActions';
 import { loadingPositions } from './redux/positions/positionsActions';
+import Sidebar from './components/Menu/Sidebar';
+
 
 const  App = (props)=> {
   const dispatch = useDispatch()
@@ -14,15 +16,15 @@ const  App = (props)=> {
     getUsers();
     getPositions();
   },[]) 
-
+  const w = window.innerWidth
+  console.log(w)
   return (
-    <>
-    <Header/>
     <div className="App">
-          
-          <Body/>
+        <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'}/>
+        <Header/>
+        <Body/>
     </div>
-    </>
+
   );
 }
 
