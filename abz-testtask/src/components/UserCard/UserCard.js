@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from '@material-ui/core/Card';
 import Avatarka from '../Avatar/AvatarPic';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Tooltip, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -23,7 +23,9 @@ const UserCard = (props)=> {
                 <Avatarka avatarUrl={photo}/>
                 <Typography>{name}</Typography>
                 <Typography>{position}</Typography>
-                <Typography>{email}</Typography>
+                <Tooltip title={email}>
+                  <Typography>{email}</Typography>
+                </Tooltip>
                 <Typography>{phone}</Typography>
             </Card>
     )
