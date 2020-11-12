@@ -46,7 +46,6 @@
     background: #ffffff;
     font-size: 16px;
     line-height: 24px;
-    font-family: OpenSans;
   }
   
   /* Morph shape necessary with bubble or elastic */
@@ -75,7 +74,10 @@
     outline: none;
   }
   
+  
   .bm-item:hover {
     color: #ef5b4c;
-    outline: none;
+  }
+  .bm-item:active{
+    color: #007bff ;
   }

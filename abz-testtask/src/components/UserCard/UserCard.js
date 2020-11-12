@@ -10,25 +10,40 @@ const useStyles = makeStyles(() => ({
       display: 'flex',
       alignItems: 'center',
       flexDirection:'column',
-      width:200,
+      width:216,
       marginBottom:41,
       backgroundColor: '#f9f9f3',
       whiteSpace:'nowrap',
     },
     avatar:{
-      marginBottom: 20
+      marginBottom: 24
     },
     name:{
       whiteSpace:'normal',
       width: '100%',
       textAlign: 'center',
       fontSize:24,
-      marginBottom: 20
+      marginBottom: 24,
+      color: '#212529'
+
+    },
+    position:{
+      fontSize:16,
+      marginBottom: 14,
+      color: '#4c4b4b'
     },
     email:{
+      fontSize:16,
+      marginBottom: 12,
       width: '100%',
-      textAlign: 'center'
+      textAlign: 'center',
+      color: '#4c4b4b'
     },
+    phone:{
+      fontSize:16,
+      color: '#4c4b4b'
+
+    }
 
     
   }));
