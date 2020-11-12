@@ -1,8 +1,6 @@
 import React from 'react'
-
 import Avatarka from '../Avatar/AvatarPic';
 import { Box, makeStyles, Tooltip, Typography, withStyles } from '@material-ui/core';
-import { grey, red } from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles(() => ({
@@ -57,7 +55,8 @@ const useStyles = makeStyles(() => ({
   }))(Tooltip);
 
 const UserCard = (props)=> {
-    const {id,name,email,phone,position,regtime,photo} = props
+  
+    const {name,email,phone,position,photo} = props // can also take id and regtime 
     const classes = useStyles();
 
     return (

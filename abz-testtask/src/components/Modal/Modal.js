@@ -87,7 +87,8 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 const Modal = (props)=> {
- const {modalIsOpen} = props
+ const {modalIsOpen,text} = props
+ console.log(props)
 const classes = useStyles();
 const dispatch = useDispatch()
 
@@ -96,16 +97,18 @@ const dispatch = useDispatch()
     <div>
       <Dialog onClose={()=>dispatch(toggleModal())} aria-labelledby="customized-dialog-title" open={modalIsOpen}>
         <DialogTitle id="customized-dialog-title" onClose={()=>dispatch(toggleModal())}>
-          Congratulations
+          {text === '' ?  'Congratulations' : 'Oops'}
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            You have successfully passed the registration
+            {text === '' ? 'You have successfully passed the registration'  : text }
+            
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={()=>dispatch(toggleModal())} color="primary" className={classes.button}>
-            Great
+            {text === '' ?  'Great' :  'Try again'}
+            
           </Button>
         </DialogActions>
       </Dialog>

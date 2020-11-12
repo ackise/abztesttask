@@ -8,6 +8,7 @@ import { connect, useDispatch } from 'react-redux';
 import { loadUsersFromServer } from '../../../redux/users/usersActions';
 import { makeStyles } from '@material-ui/core/styles';
 import { toggleModal } from '../../../redux/modal/modalActions';
+import Modal from '../../Modal/Modal'
 
 export const theme = createMuiTheme({
     palette: {
@@ -106,7 +107,7 @@ const Section4 = (props) => {
 
     const classes = useStyles();
 
-    const { positions } = props
+    const { positions ,modalIsOpen} = props
 
     let positionsList = typeof positions !== 'undefined' ? positions : []
     let imgRef = useRef('')
@@ -115,6 +116,7 @@ const Section4 = (props) => {
     let phone = useRef('')
 
     let fileName = imgRef.current.value !== undefined ? imgRef.current.value.replace(/^.*[\\\/]/, '') : ''
+   
     const [value, setValue] = React.useState('')
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -124,6 +126,17 @@ const Section4 = (props) => {
     const openModal = () => dispatch(toggleModal())
     const update = () => dispatch(loadUsersFromServer()) 
 
+    const [text,SetText] = React.useState('')
+
+    const handleText = (text) =>{
+
+        SetText(text)
+
+    }
+
+
+
+  
     const handleSubmit = (e) => {
         e.preventDefault();
         let formData = new FormData()
@@ -140,25 +153,45 @@ const Section4 = (props) => {
             const data = await res.json()
             const token = data.token
 
+            
             const newUser = async () => {
-                const res = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
+                    const res = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
                     method: "POST",
                     headers: {
                         'Token': token
                     },
                     body: formData
                 })
-                // console.log(await res.json())
+                const serverAnswer = await res.json()
+
+                try{
+                    if(serverAnswer.success === true ){
+                        console.log(serverAnswer.message)
+                    }
+                    if(serverAnswer.success !== true ){
+                        throw serverAnswer.message
+                    }
+                }
+                catch (e){
+                    handleText(e)
+                    console.log(e)
+                
+                }
+                
+                         
             }
             newUser()
         }
         registration()
-        update()
-        openModal()
+        setTimeout(()=>update(),1000)
+        setTimeout(()=>openModal(),2000)
         
     }
+
     return (
         <>
+        {modalIsOpen ? <Modal text={text}/> : null}
+
         <div name='form' id='form' className='formwrapper'>
             <h1 className='formwrapper__title'>Register to get a work </h1>
             <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
@@ -191,7 +224,7 @@ const Section4 = (props) => {
                         ref={imgRef}
                     />
                     <div className='photo-input'>
-                        <TextField placeholder='Upload you photo' disabled variant="outlined" className={classes.photo} id='file'>{fileName}</TextField>
+                        <TextField placeholder='Upload you photo' disabled variant="outlined" className={classes.photo} id='file' >{fileName}</TextField>
                         <label htmlFor='image'>
                             <Button id='image' component="span" variant="contained" >Browse</Button>
                         </label>
@@ -209,7 +242,7 @@ const Section4 = (props) => {
 const mapStateToProps = (state) => {
     return {
         positions: state.positions.positions,
-        modal: state.modal.modalIsOpen
+        modalIsOpen: state.modal.modalIsOpen
     }
 }
 

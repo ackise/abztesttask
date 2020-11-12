@@ -4,7 +4,7 @@ import http from '../../services/httpService';
 
 
 
-export const loadUsersFromServer = (counts,link) => (dispatch)=>{
+export const loadUsersFromServer = (counts,link ) => (dispatch)=>{
     counts = typeof counts !== 'undefined' ? counts : 3
     link = typeof link !== 'undefined' ? link : `${config.apiEndpoint}/users?count=${counts}`
     dispatch({type:actions.GET_USERS , payload:true})
@@ -12,7 +12,6 @@ export const loadUsersFromServer = (counts,link) => (dispatch)=>{
     return http
         .get(link)
         .then((result) => {
-            // dispatch({type:actions.SAVE_USERS, payload: result.data})
             dispatch({type:actions.SAVE_DATA, payload: result.data})
             dispatch({type:actions.GET_USERS , payload:false})
         })
@@ -24,7 +23,3 @@ export const showMore = (counts,link) => (dispatch)=>{
  dispatch(loadUsersFromServer(counts,link))
 
 }
-// export const showMore = (count) => (dispatch)=>{
-//   dispatch(loadUsersFromServer(count))
-
-// }
