@@ -17,8 +17,8 @@ const  App = (props)=> {
     getPositions();
   },[]) 
 
-  const width = window.innerWidth
-  console.log(width)
+  // const width = window.innerWidth
+  // console.log(width)
 
 
   return !loadingUsers || !loadingPositions ? <Loader /> :
