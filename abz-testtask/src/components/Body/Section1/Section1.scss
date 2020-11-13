@@ -11,6 +11,7 @@
 
     &__title {
         // width: 301px;
+        white-space: pre-wrap;
         text-transform: uppercase;
         font-size: 30px;
         text-align: center;
@@ -23,7 +24,6 @@
     &__description {
         margin-top: 29px;
         width: 327px;
-        height: 65px;
         font-size: 16px;
         line-height: 1.5;
         text-align: center;
@@ -47,4 +47,7 @@
     
     }
 
+}
+.wrap{
+    width: 327px;
 }

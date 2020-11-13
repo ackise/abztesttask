@@ -6,7 +6,7 @@ import { slide as Menu } from 'react-burger-menu'
 
 const Sidebar = () => {
     return (
-        <Menu left>
+        <Menu left styles={{width:'200px'}}>
             <Logo></Logo>
             <Divider></Divider>
             <a className='menu-item' href='#form'>About me</a>
@@ -26,6 +26,7 @@ const Sidebar = () => {
             <a className='menu-item' href='#form'>Testimonials</a>
             <a className='menu-item' href='#form'>Licenses</a>
             <a className='menu-item' href='#form'>Privacy Policy</a>
+           
         </Menu>
 
     )

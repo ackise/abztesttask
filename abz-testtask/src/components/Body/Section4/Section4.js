@@ -9,14 +9,15 @@ import { loadUsersFromServer } from '../../../redux/users/usersActions';
 import { makeStyles } from '@material-ui/core/styles';
 import { toggleModal } from '../../../redux/modal/modalActions';
 import Modal from '../../Modal/Modal'
+import * as validation from '../../../services/validation'
 
 export const theme = createMuiTheme({
     palette: {
-      primary: {
-          main: '#000'
-      },
+        primary: {
+            main: '#000'
+        },
     },
-  });
+});
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,16 +27,16 @@ const useStyles = makeStyles((theme) => ({
             marginTop: '14px',
 
         },
-        '& .Mui-focused':{
+        '& .Mui-focused': {
             borderColor: 'red'
         },
-    
+
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
                 border: 'solid 1px #d4d9de'
             },
         },
-      
+
         '& .MuiOutlinedInput-input': {
             "&::placeholder": {
                 fontSize: '16px',
@@ -60,17 +61,17 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiRadio-colorSecondary.Mui-checked': {
             color: '#007bff',
         },
-        '& .MuiButton-contained':{
+        '& .MuiButton-contained': {
             marginTop: '14px',
             width: '83px',
-            backgroundColor:'#f8f7f5',
+            backgroundColor: '#f8f7f5',
             borderTopLeftRadius: 0,
             borderBottomLeftRadius: 0,
             borderTopRightRadius: 4,
             borderBottomRightRadius: 4,
             fontFamily: 'PT Sans , sans-serif',
-            textTransform:"none",
-            boxShadow:'none',
+            textTransform: "none",
+            boxShadow: 'none',
             border: 'solid 1px #d4d9de'
         }
     },
@@ -93,9 +94,9 @@ const useStyles = makeStyles((theme) => ({
         }
 
     },
-    inputfield:{
-        '&$focused':{
-            borderColor:theme.palette.primary
+    inputfield: {
+        '&$focused': {
+            borderColor: theme.palette.primary
         }
     }
 
@@ -103,47 +104,107 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Section4 = (props) => {
-
-
+    const { positions, modalIsOpen } = props
+    // ---------------------------------------- //
     const classes = useStyles();
-
-    const { positions ,modalIsOpen} = props
+    const dispatch = useDispatch()
+    const openModal = () => dispatch(toggleModal())
+    const update = () => dispatch(loadUsersFromServer())
+    // ---------------------------------------- //
 
     let positionsList = typeof positions !== 'undefined' ? positions : []
     let imgRef = useRef('')
-    let name = useRef('')
-    let email = useRef('')
-    let phone = useRef('')
 
-    let fileName = imgRef.current.value !== undefined ? imgRef.current.value.replace(/^.*[\\\/]/, '') : ''
-   
-    const [value, setValue] = React.useState('')
+    // ---------------------------------------- //
+    const [position, setPosition] = React.useState('')
     const handleChange = (event) => {
-        setValue(event.target.value);
+        setPosition(event.target.value);
     };
 
-    const dispatch = useDispatch()
-    const openModal = () => dispatch(toggleModal())
-    const update = () => dispatch(loadUsersFromServer()) 
+    // ---------------------------------------- //
 
-    const [text,SetText] = React.useState('')
+    const [text, setText] = React.useState('')
+    const handleText = (text) => {
+        setText(text)
+    }
+    // ---------------------------------------- //
 
-    const handleText = (text) =>{
+    const [name, setName] = React.useState('')
+    const handleNameInput = (e) => {
+        setName(e.target.value)
+    }
 
-        SetText(text)
+    // ---------------------------------------- //
 
+    const [email, setEmail] = React.useState('')
+    const handleEmailInput = (e) => {
+        let notValidatedEmail = e.target.value
+        let validatedEmail = notValidatedEmail.match(validation.mailFormat)
+        setEmail(validatedEmail)
     }
 
 
+    // ---------------------------------------- //
 
-  
+    const [phone, setPhone] = React.useState('')
+    const handlePhoneInput = (e) => {
+        let notValidatedPhone = e.target.value
+        let validatedPhone = notValidatedPhone.match(validation.phoneformat)
+        setPhone(validatedPhone)
+    }
+
+    // ---------------------------------------- //
+
+    const [file, setFile] = React.useState('')
+    const handleFileInput = (e) => {
+        let fileName = e.target.value !== undefined ? e.target.value.replace(/^.*[\\\/]/, '') : ''
+        setFile(fileName)
+    }
+
+    // ---------------------------------------- //
+
+    // ***formReset***
+
+    let forma = document.getElementById('myForm')
+
+    const resetForm = (oForm) => {
+        let elements = oForm.elements
+        oForm.reset()
+
+        for (let i = 0; i < elements.length; i++) {
+
+            let field_type = elements[i].type.toLowerCase();
+
+            switch (field_type) {
+
+                case "text":
+                case "password":
+                case "textarea":
+                case "hidden":
+                    setFile('')
+                    break;
+
+                case "radio":
+                    if (position > 0) {
+                        setPosition('');
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    // ---------------------------------------- //
+
     const handleSubmit = (e) => {
         e.preventDefault();
         let formData = new FormData()
-        formData.append("name", name.current.value)
-        formData.append("email", email.current.value)
-        formData.append("phone", phone.current.value)
-        formData.append("position_id", +value)
+        formData.append("name", name)
+        formData.append("email", email.input)
+        formData.append("phone", phone.input)
+        formData.append("position_id", +position)
         formData.append("photo", imgRef.current.files[0])
         const registration = async () => {
             const res = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/token', {
@@ -153,9 +214,9 @@ const Section4 = (props) => {
             const data = await res.json()
             const token = data.token
 
-            
+
             const newUser = async () => {
-                    const res = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
+                const res = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
                     method: "POST",
                     headers: {
                         'Token': token
@@ -164,78 +225,79 @@ const Section4 = (props) => {
                 })
                 const serverAnswer = await res.json()
 
-                try{
-                    if(serverAnswer.success === true ){
+                try {
+                    if (serverAnswer.success === true) {
                         console.log(serverAnswer.message)
                     }
-                    if(serverAnswer.success !== true ){
+                    if (serverAnswer.success !== true) {
                         throw serverAnswer.message
                     }
                 }
-                catch (e){
+                catch (e) {
                     handleText(e)
-                    console.log(e)
-                
+
                 }
-                
-                         
+
             }
             newUser()
         }
         registration()
-        setTimeout(()=>update(),1000)
-        setTimeout(()=>openModal(),2000)
-        
+
+        setTimeout(() => resetForm(forma), 2000)
+        setTimeout(() => update(), 1000)
+        setTimeout(() => openModal(), 2000)
+
+
     }
 
     return (
         <>
-        {modalIsOpen ? <Modal text={text}/> : null}
+            {modalIsOpen ? <Modal text={text} /> : null}
 
-        <div name='form' id='form' className='formwrapper'>
-            <h1 className='formwrapper__title'>Register to get a work </h1>
-            <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
-                <FormControl className={classes.field}>
-                    <FormLabel component="legend" htmlFor='name'>Name</FormLabel>
-                    <TextField id='name' inputRef={name} minLength='2' maxLength='60' placeholder='Your name' required variant="outlined"  className={classes.inputfield}></TextField>
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <FormLabel component="legend" htmlFor='email'>Email</FormLabel>
-                    <TextField id='email' inputRef={email} minLength='2' maxLength='60' placeholder='Your email' required variant="outlined"  ></TextField>
-                </FormControl>
-                <FormControl className={classes.field}>
-                    <FormLabel component="legend" htmlFor='phone' >Phone number</FormLabel>
-                    <TextField id='phone' inputRef={phone} placeholder='+380 XX XXX XX XX' variant="outlined" ></TextField>
-                    <FormHelperText>Enter phone number in open format</FormHelperText>
-                </FormControl>
-                <FormControl component="fieldset" className='form__field'>
-                    <FormLabel component="legend">Select your position</FormLabel>
-                    <RadioGroup aria-label="position" name="position" value={value} onChange={handleChange}>
-                        {positionsList.map(position => <FormControlLabel value={position.id + ''} control={<Radio />} key={position.name} label={position.name} />)}
-                    </RadioGroup>
-                </FormControl>
-                <FormControl >
-                    <FormLabel component="legend">Photo</FormLabel>
-                    <input
-                        accept='image/*'
-                        id='image'
-                        type='file'
-                        style={{ display: "none" }}
-                        ref={imgRef}
-                    />
-                    <div className='photo-input'>
-                        <TextField placeholder='Upload you photo' disabled variant="outlined" className={classes.photo} id='file' >{fileName}</TextField>
-                        <label htmlFor='image'>
-                            <Button id='image' component="span" variant="contained" >Browse</Button>
-                        </label>
-                    </div>
-                </FormControl>
+            <div name='form' id='form' className='formwrapper'>
+                <h1 className='formwrapper__title'>Register to get a work </h1>
+                <form className={classes.root} onSubmit={handleSubmit} autoComplete="off" id='myForm'>
+                    <FormControl className={classes.field}>
+                        <FormLabel component="legend" htmlFor='name'>Name</FormLabel>
+                        <TextField id='name' minLength='2' maxLength='60' onChange={handleNameInput} placeholder='Your name' required variant="outlined" className={classes.inputfield}></TextField>
+                    </FormControl>
+                    <FormControl className={classes.field}>
+                        <FormLabel component="legend" htmlFor='email'>Email</FormLabel>
+                        <TextField id='email' minLength='2' maxLength='60' placeholder='Your email' required variant="outlined" onChange={handleEmailInput} ></TextField>
+                    </FormControl>
+                    <FormControl className={classes.field}>
+                        <FormLabel component="legend" htmlFor='phone' >Phone number</FormLabel>
+                        <TextField id='phone' placeholder='+380 XX XXX XX XX' variant="outlined" onChange={handlePhoneInput} type='tel'></TextField>
+                        <FormHelperText>Enter phone number in open format</FormHelperText>
+                    </FormControl>
+                    <FormControl component="fieldset" className='form__field'>
+                        <FormLabel component="legend">Select your position</FormLabel>
+                        <RadioGroup aria-label="position" name="position" value={position} onChange={handleChange}>
+                            {positionsList.map(position => <FormControlLabel value={position.id + ''} control={<Radio />} key={position.name} label={position.name} />)}
+                        </RadioGroup>
+                    </FormControl>
+                    <FormControl >
+                        <FormLabel component="legend">Photo</FormLabel>
+                        <input
+                            accept='image/*'
+                            id='image'
+                            type='file'
+                            style={{ display: "none" }}
+                            ref={imgRef}
+                            onChange={handleFileInput}
+                        />
+                        <div className='photo-input'>
+                            <TextField placeholder='Upload you photo' disabled variant="outlined" className={classes.photo} id='file' value={file} ></TextField>
+                            <label htmlFor='image'>
+                                <Button id='image' component="span" variant="contained" >Browse</Button>
+                            </label>
+                        </div>
+                    </FormControl>
 
-                <button className='button' type='submit' >Sign up now</button>
-            </form>
-            
-        </div> 
-    
+                    <button className='button' type='submit' >Sign up now</button>
+                </form>
+
+            </div>
         </>
     )
 }

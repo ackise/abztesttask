@@ -26,7 +26,7 @@ const  App = (props)=> {
   (
     <div className="App">
 
-        <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'}/>
+        {/* <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'}/> */}
         <Header/>
         <Body/>
         <Footer/>
